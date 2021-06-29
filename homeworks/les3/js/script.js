@@ -49,6 +49,8 @@ if ((12 <= age && age <= 17) || (60 <= age && age <= 80)) {
     } else {
         alert("By-by!");
     }
+} else if (12 > age || age > 80) {
+    alert("Undefined...");
 } else {
     alert("GO!");
 }
