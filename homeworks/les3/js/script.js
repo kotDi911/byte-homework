@@ -5,7 +5,7 @@ const number2 = Number(prompt("enter next number"));
 if (number1>number2){
     alert("Число "+number1+" больше чем "+number2);
 }else if (number1<number2){
-    alert("Число "+number1+" меньше чем "+number2);
+    alert("Число " +number1+ " меньше чем " +number2);
 }else {
     alert("Число "+number1+" равно числу "+number2);
 }
@@ -15,6 +15,7 @@ if (number1>number2){
     const a = Number(prompt("Enter number"));
     const action = prompt("Enter action (+,-,* or /)");
     const b = Number(prompt("Enter number two"));
+    let result;
 
     switch (action) {
         case '+':
@@ -41,13 +42,13 @@ if (number1>number2){
 //3
 
 const age = Number(prompt("enter your age"));
-if (18>age || age>=60){
-    let adultPeople = prompt("enter Y/N");
-    if (adultPeople == "y"){
+if ((12 <= age && age <= 17) || (60 <= age && age <= 80)) {
+    let adultPeople = confirm("С вами есть взрослые?");
+    if (adultPeople) {
         alert("GO!");
     } else {
         alert("By-by!");
     }
-}else {
+} else {
     alert("GO!");
 }
