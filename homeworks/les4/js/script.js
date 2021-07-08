@@ -14,9 +14,10 @@ console.log(plus(num1, num2));
 console.log(plus(num3, num4));
 
 
-function plus1(a, b) {
+/*function plus1(a, b) {
     return a + b;
-}
+}*/
+const plus1 = (a, b) => a + b;
 plus1(num1, num2);
 plus1(num3, num4);
 
