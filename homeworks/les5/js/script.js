@@ -37,3 +37,18 @@ autorize();
 
 //2
 
+const numbers = (start, finish) => {
+    Outer:
+    for (let i = start; i <= finish; i++) {
+        for (let j = 2; j < i; j++){
+            if (i % j ===0){
+                continue Outer;
+            }
+        }
+        console.log(i);
+    }
+}
+console.log('Numbers diapason: 1 - 10');
+numbers (1, 10);
+console.log('Numbers diapason: 20 - 100');
+numbers (20, 100);
