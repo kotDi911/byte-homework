@@ -7,25 +7,25 @@ const autorize = () => {
     let userPassword;
     let userLogin;
 
-    alert('You have 3 attempts');
+    alert('У вас есть 3 попытки');
 
-    for (let i = 1; i < 4; i++){
-        alert('attempts ' + i);
+    for (let i = 3; i > 0; i--){
+        alert('Осталось ' + i + ' попытки');
         while (i) {
             userLogin = prompt('Login');
             if (!userLogin){
-                alert('Enter login');
+                alert('Введите логин');
                 continue;
             }
             userPassword = prompt('Password');
             if (!userPassword){
-                alert('Enter password');
+                alert('Введите пароль');
                 continue;
             }
             break;
         }
         if (userPassword !== PASSWORD || userLogin !== LOGIN){
-            alert('Data incorrect!');
+            alert('Данные неверны!');
         }
         else {
             alert('Welcome!');
