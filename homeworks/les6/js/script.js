@@ -2,7 +2,7 @@
 
 const autorize = () => {
 
-    let name = () => {
+    let name = (str) => {
         do {
             name = prompt('name');
             if (name !== 0) {
@@ -16,7 +16,7 @@ const autorize = () => {
         } while (!name || !name.length < 6);
     }
 
-    let surName = () => {
+    let surname = () => {
         do {
             surName = prompt('surName');
             if (surName !== 0) {
@@ -31,29 +31,27 @@ const autorize = () => {
     }
 
     let password = () => {
-        // let reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+        var res = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
         do {
             password = prompt('Password');
             if (password !== 0) {
-                if (password.length < 6) {
-                    alert('Введите Password');
+                if(!res.test(password)){
+                    alert('Введите Password')
                     continue;
                 }
                 console.log(password);
                 break;
             }
-        } while (!surName || !surName.length < 6);
+        } while (!surname);
     }
+
 
     do {
         name();
-        surName();
+        surname();
         password();
         break;
     } while (!name && !surName && !password)
-    {
-        alert('OK')
-    }
 
 }
 autorize();
@@ -61,14 +59,11 @@ autorize();
 
 //2
 
-let a = prompt('enter a');
-let b = prompt('enter b');
+let a =Number(prompt('Num 1'));
+let b =Number(prompt('Num 2'));
 
-const numbers = (min, max) => {
-    return Math.floor(Math.random() * (b - a) ) + a;
-}
-
-console.log('Numbers diapason: 1 - 10');
-numbers (a, b);
-
-
+const randomNumber = function (min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+};
+const rand = randomNumber(a, b);
+alert(rand);
