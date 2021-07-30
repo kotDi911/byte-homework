@@ -7,8 +7,6 @@ const autorize = () => {
     let userPassword;
     let userLogin;
 
-    alert('У вас есть 3 попытки');
-
     for (let i = 3; i > 0; i--){
         alert('Осталось ' + i + ' попытки');
         while (i) {
@@ -48,6 +46,7 @@ const numbers = (start, finish) => {
         console.log(i);
     }
 }
+
 console.log('Numbers diapason: 1 - 10');
 numbers (1, 10);
 console.log('Numbers diapason: 20 - 100');
