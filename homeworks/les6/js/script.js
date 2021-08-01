@@ -1,63 +1,65 @@
 //1
+let userName;
+let userSurname;
+let userPassword;
 
-const autorize = () => {
+let us = (str) => {
+    return str[0].toUpperCase() + str.slice(1).toLowerCase();
+};
 
-    let name = (str) => {
-        do {
-            name = prompt('name');
-            if (name !== 0) {
-                if (name.length < 6) {
-                    alert('Введите name');
-                    continue;
-                }
-                console.log(name);
-                break;
-            }
-        } while (!name || !name.length < 6);
-    }
+let name = (str) => {
+    let res = /.{6,}/;
+    do {
+        userName = prompt('name');
+        if (!res.test(userName)) {
+            alert('Введите name ');
+            continue;
+        }
+        console.log(userName);
+    } while (!res.test(userName));
+}
 
-    let surname = () => {
-        do {
-            surName = prompt('surName');
-            if (surName !== 0) {
-                if (surName.length < 6) {
-                    alert('Введите surName');
-                    continue;
-                }
-                console.log(surName);
-                break;
-            }
-        } while (!surName || !surName.length < 6);
-    }
+let surname = (str) => {
+    let res = /.{6,}/;
+    do {
+        userSurname = prompt('surname');
+        if (!res.test(userSurname)) {
+            alert('Введите surname');
+            continue;
+        }
+        console.log(userSurname);
+    } while (!res.test(userSurname));
+}
 
-    let password = () => {
-        var res = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
-        do {
-            password = prompt('Password');
-            if (password !== 0) {
-                if(!res.test(password)){
-                    alert('Введите Password')
-                    continue;
-                }
-                console.log(password);
-                break;
-            }
-        } while (!surname);
-    }
+let password = (str) => {
+    let res = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/; // добавил проверку на числа
+    do {
+        userPassword = prompt('Password');
+        if (!res.test(userPassword)) {
+            alert('Введите Password')
+            continue;
+        }
+        console.log(userPassword);
+    } while (!res.test(userPassword));
+}
 
+const authorize = () => {
 
     do {
-        name();
-        surname();
-        password();
-        break;
-    } while (!name && !surName && !password)
+        name(userName);
+        surname(userSurname);
+        password(userPassword)
+        //let fullName = us(userName) + ' ' + us(userSurname); // вариант 1
+        //alert(fullName);                                     // вариант 1
+        alert(us(userName) + ' ' + us(userSurname));           // вариант 2
+    } while (!name && !surname && !password);
 
 }
-autorize();
 
+authorize();
 
 //2
+
 
 let a =Number(prompt('Num 1'));
 let b =Number(prompt('Num 2'));
