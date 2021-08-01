@@ -1,42 +1,45 @@
-//1
-let userName;
-let userSurname;
-let userPassword;
+// lesson 6.1
 
 let us = (str) => {
     return str[0].toUpperCase() + str.slice(1).toLowerCase();
 };
 
-let name = (str) => {
+let name = () => {
     let res = /.{1,}/;
+    let userName = "";
     do {
-        userName = prompt('name');
+        userName = prompt('Введите свое имя');
         if (!res.test(userName)) {
-            alert('Введите name ');
+            alert('Введите имя');
             continue;
         }
         console.log(userName);
     } while (!res.test(userName));
+
+    return us(userName);
 }
 
-let surname = (str) => {
+let surname = () => {
     let res = /.{1,}/;
+    let userSurname;
     do {
-        userSurname = prompt('surname');
+        userSurname = prompt('Введите свою фамилию');
         if (!res.test(userSurname)) {
-            alert('Введите surname');
+            alert('Введите фамилию');
             continue;
         }
         console.log(userSurname);
     } while (!res.test(userSurname));
+    return us(userSurname);
 }
 
-let password = (str) => {
+let password = () => {
     let res = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/; // добавил проверку на числа
+    let userPassword;
     do {
-        userPassword = prompt('Password');
+        userPassword = prompt('Введите свой пароль');
         if (!res.test(userPassword)) {
-            alert('Введите Password')
+            alert('Введите корректный пароль не меньше 6 символов, например A5d3fV')
             continue;
         }
         console.log(userPassword);
@@ -44,25 +47,18 @@ let password = (str) => {
 }
 
 const authorize = () => {
-
-    do {
-        name(userName);
-        surname(userSurname);
-        password(userPassword)
-        //let fullName = us(userName) + ' ' + us(userSurname); // вариант 1
-        //alert(fullName);                                     // вариант 1
-        alert(us(userName) + ' ' + us(userSurname));           // вариант 2
-    } while (!name && !surname && !password);
-
+    let fullName = name() + ' ' + surname();
+    password();
+    alert(fullName);
 }
 
 authorize();
 
-//2
+// lesson 6.2
 
 
-let a =Number(prompt('Num 1'));
-let b =Number(prompt('Num 2'));
+let a = Number(prompt('Num 1'));
+let b = Number(prompt('Num 2'));
 
 const randomNumber = function (min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
