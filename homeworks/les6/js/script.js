@@ -8,7 +8,7 @@ let us = (str) => {
 };
 
 let name = (str) => {
-    let res = /.{6,}/;
+    let res = /.{1,}/;
     do {
         userName = prompt('name');
         if (!res.test(userName)) {
@@ -20,7 +20,7 @@ let name = (str) => {
 }
 
 let surname = (str) => {
-    let res = /.{6,}/;
+    let res = /.{1,}/;
     do {
         userSurname = prompt('surname');
         if (!res.test(userSurname)) {
