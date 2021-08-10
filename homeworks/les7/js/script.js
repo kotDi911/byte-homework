@@ -1,6 +1,6 @@
-//1
+// lesson 7.1
 
-function TimeW() {
+let getTimeTable = () => {
 
     const timeTable = {};
     let task;
@@ -20,9 +20,9 @@ function TimeW() {
     return timeTable;
 }
 
-console.log(TimeW());
+console.log(getTimeTable());
 
-//2
+// lesson 7.2
 
 const salaries = {
     John: "4300.00",

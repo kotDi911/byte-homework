@@ -1,37 +1,25 @@
 // lesson 6.1
 
-let us = (str) => {
+let toUpFirst = (str) => {
     return str[0].toUpperCase() + str.slice(1).toLowerCase();
 };
 
-let name = () => {
+let getNameOrSurname = (promptText, promptAlert) => {
     let res = /.{1,}/;
-    let userName = "";
+    let value;
     do {
-        userName = prompt('Введите свое имя');
-        if (!res.test(userName)) {
-            alert('Введите имя');
+        value = prompt(promptText);
+        if (!res.test(value)) {
+            alert(promptAlert);
             continue;
         }
-        console.log(userName);
-    } while (!res.test(userName));
-
-    return us(userName);
+        console.log('Input text:', value);
+    } while (!res.test(value));
+    console.log('Finish text:', toUpFirst(value));
+    return toUpFirst(value);
 }
-
-let surname = () => {
-    let res = /.{1,}/;
-    let userSurname;
-    do {
-        userSurname = prompt('Введите свою фамилию');
-        if (!res.test(userSurname)) {
-            alert('Введите фамилию');
-            continue;
-        }
-        console.log(userSurname);
-    } while (!res.test(userSurname));
-    return us(userSurname);
-}
+const name = getNameOrSurname('Введите свое имя', 'Введите имя');
+const surname = getNameOrSurname('Введите свою фамилию', 'Введите фамилию');
 
 let password = () => {
     let res = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/; // добавил проверку на числа
@@ -42,12 +30,12 @@ let password = () => {
             alert('Введите корректный пароль не меньше 6 символов, например A5d3fV')
             continue;
         }
-        console.log(userPassword);
+        console.log('User password:', userPassword);
     } while (!res.test(userPassword));
 }
 
 const authorize = () => {
-    let fullName = name() + ' ' + surname();
+    const fullName = `${name} ${surname}`;
     password();
     alert(fullName);
 }
