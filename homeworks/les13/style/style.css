@@ -1,0 +1,25 @@
+img{
+    width: 350px;
+}
+.slide {
+    display: none;
+    margin: 0 auto;
+    text-align: center;
+}
+.active {
+    display: block!important;
+}
+button {
+    margin: 10px;
+    padding: 10px 30px;
+    text-align: center;
+    display: inline-block;
+    background: #80808057;
+    font-size: 20px;
+    color: black;
+    border: 6px groove #272e7d;
+}
+.buttons {
+    display: flex;
+    justify-content: center;
+}
