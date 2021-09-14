@@ -1,3 +1,4 @@
+
 const formConfig = [
     {
         element: "text",
@@ -31,59 +32,57 @@ const formConfig = [
 ];
 
 const formAuthor = (arr) => {
-
     let containerForm = document.createElement("form");
-    let inputElement;
-    let labelElement;
-    let containerElement;
-    let option = '';
-    let select = document.createElement('select');
     let submitBtn = document.createElement("button");
 
-    let getListHtml = (items) => {
-
-        for (let key of items.options) {
-            option += `<option value="${key.value}"> ${key.text} </option>`;
-        }
-
-        if (option) {
-            select.innerHTML = option;
-        }
-        return select;
-    };
-
     arr.forEach((items) => {
+
+        let labelElement = document.createElement("label");
+        labelElement.innerText = items.label;
+        labelElement.setAttribute('for', items.name );
+
+        let containerElement = document.createElement("div");
+        containerElement.append(labelElement);
+
         if (items.element === 'text') {
-            inputElement = `<input type="text" name="${items.name}" id="${items.name}">`;
-            labelElement = `<label for="${items.name}"> ${items.label} </label>`;
-            containerElement = document.createElement("div");
-            containerElement.innerHTML = labelElement + inputElement;
-            containerForm.append(containerElement);
+            let inputElement = document.createElement("input");
+            inputElement.innerText = items.name;
+            inputElement.setAttribute('type', items.element);
+            inputElement.setAttribute('name', items.name);
+            inputElement.setAttribute('id', items.name);
+            labelElement.style = 'width: 60px;' + 'display: inline-block;';
+            containerElement.append(inputElement);
+            containerElement.style = ''
         }
         if (items.element === 'select') {
-            labelElement = `<label for="${items.name}"> ${items.label} </label>`;
-            containerElement = document.createElement("div");
-            containerElement.innerHTML = labelElement;
-            containerElement.append(getListHtml(items));
+            let option = items.options.map((key) => `<option value="${key.value}"> ${key.text} </option>`).join('');
+            let select = document.createElement('select');
+            select.innerHTML = option;
             select.setAttribute('name', items.name);
             select.setAttribute('id', items.name);
-            containerForm.append(containerElement);
+            containerElement.append(select);
         }
+        containerForm.append(containerElement);
     });
-
+    console.log(containerForm);
     submitBtn.innerText = 'submit';
     containerForm.append(submitBtn);
     document.body.append(containerForm);
 
+    let convertDataToObj = (formData) => {
+        let formValues = {};
+
+        for(let pair of formData){
+            formValues[pair[0]] = pair[1]
+        }
+        return formValues;
+    };
     const handleSubmit = (event) => {
         event.preventDefault();
-        const formValues = [{
-        login: login.value,
-        age: age.value,
-        select: language.value,
-    }];
 
-        console.log(formValues);
+        let formData = new FormData(event.target);
+        let prepareData = convertDataToObj(formData);
+        console.log(`formValues`, prepareData);
     };
     containerForm.addEventListener("submit", handleSubmit);
 };
