@@ -120,7 +120,7 @@ form.addEventListener("submit", handleSubmit);
 
 // -------------------------------- task 5.3 -------------------------------- //
 const regexp1 = /^[\d]{12,}$/;
-let string = '12345678910054546545654';
+let string = '12345678 910054546545654';
 let result1 = string.match(regexp1);
 console.log(result1);
 string = 'sa41414141414141';
