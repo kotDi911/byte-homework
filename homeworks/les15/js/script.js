@@ -30,11 +30,11 @@ const response = {
 const { meta: { paging: { total} } } = response
 //console.log(total)
 
-const { data } = response,
-    [firstElem] = data,
-    { is_active: isActive } = firstElem;
-//console.log(firstElem)
-//console.log(isActive)
+const { data: [ firstElem ] } = response
+const { is_active: isActive } =firstElem
+
+// console.log(firstElem)
+// console.log(isActive)
 
 // ------------------------------- task 2 -------------------------------- //
 
