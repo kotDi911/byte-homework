@@ -1,0 +1,7 @@
+label{
+    background: grey;
+    display: inline-block;
+    border: 2px solid black;
+    width: 50px;
+    text-align: center;
+}
