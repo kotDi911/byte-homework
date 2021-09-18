@@ -27,10 +27,7 @@ const response = {
         },
     },
 };
-
-const { meta } = response,
-    { paging } = meta,
-    { total } = paging;
+const { meta: { paging: { total} } } = response
 //console.log(total)
 
 const { data } = response,
@@ -79,8 +76,8 @@ const createMessage = (author, text, reciever, time ) => {
 const message = createMessage("Peter", "Hello", "Sam", new Date());
 console.log(message);
 
-const createMessage1 = ({ author: Guest, text, reciever, time } ) => {
-    return `From ${Guest} to ${reciever}: ${text} (${time})`;
+const createMessage1 = ({ author = 'Guest', text, reciever, time } ) => {
+    return `From ${author} to ${reciever}: ${text} (${time})`;
 };
 // после выполнения этого задания, функция должна коректно работать с таким аргументом
 const message1 = createMessage1({
