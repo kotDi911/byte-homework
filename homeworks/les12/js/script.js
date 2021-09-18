@@ -1,66 +1,41 @@
-let buttonElem = document.createElement('button');
-document.body.append(buttonElem);
-buttonElem.innerText = 'button'
-
+let button = document.createElement('button');
+button.innerText = 'button';
+let test = document.createElement('span');
+test.innerText = 'anything text';
 let tooltipElem;
 
-document.onmouseover = function(event) {
-    let target = event.target;
-    tooltipElem = document.createElement('div');
-    tooltipElem.className = 'tooltip';
-    tooltipElem.innerText = 'tooltip message';
-    document.body.append(tooltipElem);
+function createTooltip(elem, tooltipText){
+    document.body.append(elem);
 
-    let coords = target.getBoundingClientRect();
+    elem.onmouseover = function(event) {
+        let target = event.target;
+        tooltipElem = document.createElement('div');
+        document.body.append(tooltipElem);
+        tooltipElem.className = 'tooltip';
+        tooltipElem.innerText = tooltipText;
+        document.body.append(tooltipElem);
 
-    let left =
-        coords.left + (target.offsetWidth - tooltipElem.offsetWidth) / 2;
-    if (left < 0) left = 0;
+        let coords = target.getBoundingClientRect();
 
-    let top = coords.top - tooltipElem.offsetHeight - 5;
-    if (top < 0) {
-        top = coords.top + target.offsetHeight + 5;
-    }
+        let left =
+            coords.left + (target.offsetWidth - tooltipElem.offsetWidth) / 2;
+        if (left < 0) left = 0;
 
-    tooltipElem.style.left = left + 'px';
-    tooltipElem.style.top = top + 'px';
-};
+        let top = coords.top - tooltipElem.offsetHeight - 5;
+        if (top < 0) {
+            top = coords.top + target.offsetHeight + 5;
+        }
 
-document.onmouseout = function(e) {
-    if (tooltipElem) {
-        tooltipElem.remove();
-        tooltipElem = null;
-    }
-};
+        tooltipElem.style.left = left + 'px';
+        tooltipElem.style.top = top + 'px';
+    };
 
-/*
-
-let tooltipElem;
-
-document.onmouseover = function(event) {
-    let target = event.target;
-
-    tooltipElem = document.createElement('div');
-    tooltipElem.className = 'tooltip';
-    tooltipElem.innerText = 'I am a tooltip';
-    document.body.append(tooltipElem);
-
-    let coords = target.getBoundingClientRect();
-
-    let left = coords.left + (target.offsetWidth - tooltipElem.offsetWidth) / 2;
-
-    let top = coords.top - tooltipElem.offsetHeight - 20;
-
-    tooltipElem.style.left = left + 'px';
-    tooltipElem.style.top = top + 'px';
-};
-
-document.onmouseout = function(e) {
-
-    if (tooltipElem) {
-        tooltipElem.remove();
-        tooltipElem = null;
-    }
-
-};
-*/
+    document.onmouseout = function(e) {
+        if (tooltipElem) {
+            tooltipElem.remove();
+            tooltipElem = null;
+        }
+    };
+}
+createTooltip(button, 'some text from button');
+createTooltip(test, 'test text bla bla bla bla');
