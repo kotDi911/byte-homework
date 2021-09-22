@@ -1,31 +1,20 @@
-let initToSite = 0;
-let initElem = 'initToSite'
-const updateLocalStorage = (initToSite) =>{
-    localStorage.setItem(initElem,JSON.stringify(initToSite))
-}
-let greeting = document.createElement('h1');;
-let renderGreeting = () => {
-    greeting.innerText = 'Дооро пожаловать!'
+const renderGreeting = () => {
+    const greeting = document.createElement('h1');
+    greeting.innerText = 'Дооро пожаловать!';
     document.body.append(greeting)
-}
-let textElem = document.createElement('h2')
-let addInit = () =>{
-    initToSite++
-    updateLocalStorage(initToSite);
-}
-let init = () => {
-    if(localStorage.getItem(initElem)){
-        const { initToSite } = JSON.parse(localStorage.getItem(initElem));
-        greeting.remove();
-        renderGreeting();
-        addInit();
-    }else {
-        alert('hi')
+};
+const enteringToSite = () => {
+    const initElem = 'initToSite';
+    if(!localStorage.getItem(initElem)) {
+        localStorage.setItem(initElem, JSON.stringify(1));
+    } else {
+        localStorage.initToSite++;
     }
-    if(initToSite > 1){
+    renderGreeting();
+    if(localStorage.initToSite > 1) {
+        let textElem = document.createElement('h2');
         document.body.append(textElem);
-        textElem.innerText = `Вы заходили раз: ${ initToSite }`;
+        textElem.innerText = `Вы заходили раз: ${localStorage.initToSite}`;
     }
-}
-init();
-updateLocalStorage(initToSite);
+};
+enteringToSite();
