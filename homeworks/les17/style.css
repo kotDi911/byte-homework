@@ -1,0 +1,24 @@
+body{
+    display: flex;
+}
+.timer{
+    width: 130px;
+    height: 40px;
+    border: 2px solid black;
+    padding: 0 10px;
+    font-size: 36px;
+    background: #e413d461;
+    border-radius: 15px;
+}
+.start{
+    margin-right: 5px;
+    border: 2px solid black;
+    background: #04ff00c2;
+    border-radius: 40%;
+}
+.pause{
+    margin-right: 5px;
+    border: 2px solid black;
+    background: #ff8100db;
+    border-radius: 20%;
+}
