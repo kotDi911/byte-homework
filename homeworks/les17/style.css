@@ -1,24 +1,38 @@
-body{
+.container{
+    background: black;
+    border-radius: 15px;
+    padding: 20px;
     display: flex;
+    align-items: center;
 }
-.timer{
-    width: 130px;
-    height: 40px;
-    border: 2px solid black;
+.timer_container{
+    width: max-content;
+    height: max-content;
+    border: 2px solid grey;
     padding: 0 10px;
     font-size: 36px;
     background: #e413d461;
     border-radius: 15px;
+    color: #05e200;
+}
+.start, .pause, .reset{
+    padding: 15px 10px;
+    margin-right: 10px;
+    border: 2px solid grey;
+    border-radius: 40px;
 }
 .start{
-    margin-right: 5px;
-    border: 2px solid black;
     background: #04ff00c2;
-    border-radius: 40%;
 }
 .pause{
-    margin-right: 5px;
-    border: 2px solid black;
     background: #ff8100db;
-    border-radius: 20%;
+}
+.reset{
+    background: rgba(255, 0, 15, 0.86);
+}
+.text{
+    font-size: 42px;
+    margin-left: 20px;
+    color: red;
+    display: none;
 }
