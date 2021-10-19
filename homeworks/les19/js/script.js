@@ -32,7 +32,7 @@ const getCountry = async () => {
     const [{flag}] = resultFlag;
     renderIPInfo(country_name, country_capital, currency, flag);
 };
-getCountry().then();
+getCountry();
 
 //-------------------------- task 2 --------------------------//
 
@@ -51,7 +51,8 @@ const renderForm = () => {
     containerForm.append(inputId, button);
     container.append(containerForm);
     document.body.append(container);
-    const handleSubmit = (event) => {
+
+    button.addEventListener('click', (event) => {
         event.preventDefault();
         const res = /^\d/;
         let input = inputId.value;
@@ -59,20 +60,20 @@ const renderForm = () => {
         const errorContainer = document.createElement('p');
         const error = container.querySelector('.error');
         errorContainer.classList = 'error';
-        if (res.test(input) === true && input >= 1 && input < 83) {
+        if (res.test(input) && input >= 1 && input < 83) {
             if (error) {
                 error.remove();
             }
-            if (button.dataset.activity !== input) {
-                button.dataset.activity = input;
-                getData(input)
-                    .then((response) => {
-                        if (updateCard) {
-                            updateCard.remove()
-                        }
-                        container.append(renderCard(response.name, input));
-                    });
-            }
+            button.disabled = true;
+            getData(input)
+                .then((response) => {
+                    if (updateCard) {
+                        updateCard.remove()
+                    }
+                    container.append(renderCard(response.name, input, response.films));
+                });
+            inputId.value = '';
+            button.disabled = false;
         } else {
             inputId.value = '';
             if (updateCard) {
@@ -84,8 +85,7 @@ const renderForm = () => {
             container.append(errorContainer);
             errorContainer.innerText = 'Enter only numbers 1-82'
         }
-    };
-    button.addEventListener('click', handleSubmit)
+    });
 };
 
 renderForm();
@@ -104,11 +104,8 @@ const renderMovie = (films, container) => {
     const movieCards = films.map(createMovieCard);
     container.append(...movieCards)
 };
-const getAllFilms = async (id, container) => {
+const getAllFilms = async (id, films, container) => {
     const containerFilms = document.createElement('div');
-    const response = await fetch(`${BASE_URL}/${id}`);
-    const result = await response.json();
-    const {films} = result;
     const requests = films.map(url => fetch(url));
     const responses = await Promise.all(requests);
     const jsonResp = responses.map(resp => resp.json());
@@ -117,7 +114,7 @@ const getAllFilms = async (id, container) => {
     renderMovie(filmsResult, containerFilms);
     container.append(containerFilms);
 };
-const renderCard = (name, id) => {
+const renderCard = (name, id, films) => {
     const containerCard = document.createElement('div');
     const heroName = document.createElement('h3');
     const button = document.createElement('button');
@@ -129,14 +126,10 @@ const renderCard = (name, id) => {
     button.addEventListener('click', (event) => {
         event.preventDefault();
         if (!containerCard.querySelector('.films')) {
-            if (button.dataset.activity !== id) {
-                button.dataset.activity = id;
-                getData(id).then((response) => {
-                    console.log(response)
-                    getAllFilms(id, containerCard)
-                });
-            }
+            button.disabled = true;
+            getAllFilms(id, films, containerCard)
         }
+        button.disabled = false
     });
     return containerCard
 };
