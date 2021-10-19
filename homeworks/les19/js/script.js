@@ -71,9 +71,10 @@ const renderForm = () => {
                         updateCard.remove()
                     }
                     container.append(renderCard(response.name, input, response.films));
+                    button.disabled = false;
                 });
             inputId.value = '';
-            button.disabled = false;
+
         } else {
             inputId.value = '';
             if (updateCard) {
@@ -127,9 +128,9 @@ const renderCard = (name, id, films) => {
         event.preventDefault();
         if (!containerCard.querySelector('.films')) {
             button.disabled = true;
-            getAllFilms(id, films, containerCard)
+            getAllFilms(id, films, containerCard).then(() => button.disabled = false )
         }
-        button.disabled = false
+
     });
     return containerCard
 };
