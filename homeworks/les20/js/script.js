@@ -1,5 +1,5 @@
 function PublicService(options) {
-
+    this.tarifs = options;
 }
 
 const tariff = {
@@ -13,9 +13,9 @@ const service = new PublicService(tariff);
 
 PublicService.prototype.addMeterReadings = function (value, key) {
     let reg = /^\d/;
-    console.log(Object.keys(tariff));
-    if (Object.keys(tariff).find((keys) => keys === key)) {
-        if (tariff[key]) {
+    console.log(Object.keys(this.tarifs));
+    if (Object.keys(this.tarifs).find((keys) => keys === key)) {
+        if (this.tarifs[key]) {
             if (reg.test(value)) {
                 this[key] = value;
             } else {
@@ -37,8 +37,8 @@ PublicService.prototype.getSum = function () {
     for (let key in this) {
         let value = this[key];
         if (value === Number(value)) {
-            result += value * tariff[key];
-            console.log(value * tariff[key])
+            result += value * this.tarifs[key];
+            console.log(value * this.tarifs[key])
         }
     }
     return result;
