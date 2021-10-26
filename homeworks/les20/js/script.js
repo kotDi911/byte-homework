@@ -1,7 +1,3 @@
-function PublicService(options) {
-    this.tarifs = options;
-}
-
 const tariff = {
     hotWater: 2,
     coldWater: 4,
@@ -9,18 +5,23 @@ const tariff = {
     electricity: 5,
 };
 
+function PublicService(options) {
+    this.tariff = options;
+    this.meterReadings = {};
+    console.log(this.tariff);
+    console.log(this.meterReadings)
+}
+
 const service = new PublicService(tariff);
 
 PublicService.prototype.addMeterReadings = function (value, key) {
-    let reg = /^\d/;
-    console.log(Object.keys(this.tarifs));
-    if (Object.keys(this.tarifs).find((keys) => keys === key)) {
-        if (this.tarifs[key]) {
-            if (reg.test(value)) {
-                this[key] = value;
-            } else {
-                throw new Error(`"${value}" is not correct value`)
-            }
+    if(typeof value !== 'number'){
+        throw new Error(`"${value}" is not correct value`)
+    }
+    // console.log(Object.keys(this));
+    if (Object.keys(this.tariff).find((keys) => keys === key)) {
+        if (!this.meterReadings[key]) {
+            this.meterReadings[key] = value;
         } else {
             throw new Error(`Service "${key}" is already included`)
         }
@@ -29,17 +30,14 @@ PublicService.prototype.addMeterReadings = function (value, key) {
     }
 };
 PublicService.prototype.deleteMeterReadings = function (key) {
-    return delete this[key]
+    return delete this.meterReadings[key]
 };
 PublicService.prototype.getSum = function () {
     let result = 0;
 
-    for (let key in this) {
-        let value = this[key];
-        if (value === Number(value)) {
-            result += value * this.tarifs[key];
-            console.log(value * this.tarifs[key])
-        }
+    for (let key in this.meterReadings) {
+        let value = this.meterReadings[key];
+        result += value * this.tariff[key];
     }
     return result;
 };
@@ -47,9 +45,9 @@ PublicService.prototype.getSum = function () {
 service.addMeterReadings(50, "hotWater");
 service.addMeterReadings(100, "gas");
 service.addMeterReadings(200, "coldWater");
+// service.addMeterReadings(200, "coldWater");
 service.deleteMeterReadings("coldWater");
 service.addMeterReadings(200, "coldWater");
-
 service.addMeterReadings(300, "electricity");
 
 const res = service.getSum();
