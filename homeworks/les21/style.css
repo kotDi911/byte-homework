@@ -1,3 +1,53 @@
 body {
-    background: gray
+    background: #000000d1;
+}
+
+h2, h4, p {
+    margin: 10px 0;
+}
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 5px;
+}
+
+.form{
+    background: linear-gradient(to top, cornflowerblue, #000000b0);
+    padding: 20px;
+    border: 2px solid black;
+    border-radius: 15px;
+    display: flex;
+}
+select, input{
+    height: 35px;
+    font-size: 20px;
+    box-sizing: border-box;
+}
+.card {
+    background: linear-gradient(to top, cornflowerblue, #000000b0);
+    padding: 10px;
+    margin: 10px;
+    border: 2px solid black;
+    border-radius: 15px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+.create_btn{
+    background: #00bf17;
+    font-size: 20px;
+}
+.close_btn {
+    border: 2px solid #91ff00;
+    border-radius: 50%;
+    width: 29px;
+    height: 27px;
+    text-align: center;
+    color: red;
+    background: black;
+    font-size: 20px;
+    font-weight: bold;
+    position: absolute;
+    top: 5px;
+    right: 5px;
 }

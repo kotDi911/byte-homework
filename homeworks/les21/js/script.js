@@ -27,17 +27,22 @@ const BASE_URL = 'https://swapi.dev/api';
 const optionSelect = ['starships', 'vehicles', 'planets'];
 
 const containerForm = document.createElement('form');
+const gridCard = document.createElement('div');
 const selectElem = document.createElement('select');
 const inputElem = document.createElement('input');
 const cardCreateBtn = document.createElement('button');
 const optionElem = optionSelect.map((option) => `<option value="${option}"> ${option} </option>`).join('');
 
 cardCreateBtn.innerText = 'Add Card';
+cardCreateBtn.classList.add('create_btn');
 inputElem.placeholder = 'ID';
 selectElem.innerHTML = optionElem;
+gridCard.classList.add('grid');
+containerForm.classList.add('form');
 
 containerForm.append(selectElem, inputElem, cardCreateBtn);
 document.body.append(containerForm);
+document.body.append(gridCard);
 
 cardCreateBtn.addEventListener('click', async (event) => {
     event.preventDefault();
@@ -62,7 +67,7 @@ class API {
             // responses.forEach(key => console.log(key))
             // // const requests = response.map(url => fetch(url));
             // console.log(requests)
-            console.log(response)
+            console.log(response);
             return response
         };
     }
@@ -79,7 +84,7 @@ class API {
             console.log(responses);
             switch (this.select) {
                 case (this.select = 'planets'):
-                    if (responses.detail !== 'Not found') {
+                    if (responses.detail !== 'Not found' && this.id) {
                         const planet = await new Planet(responses);
                         planet.render();
                     } else {
@@ -87,7 +92,7 @@ class API {
                     }
                     break;
                 case (this.select = 'vehicles'):
-                    if (responses.detail !== 'Not found') {
+                    if (responses.detail !== 'Not found' && this.id) {
                         const vehicles = await new Vehicles(responses);
                         vehicles.render();
                     } else {
@@ -95,7 +100,7 @@ class API {
                     }
                     break;
                 case (this.select = 'starships'):
-                    if (responses.detail !== 'Not found') {
+                    if (responses.detail !== 'Not found' && this.id) {
                         const starships = await new Starships(responses);
                         starships.render();
                     } else {
@@ -121,7 +126,7 @@ class Card {
     }
 
     render() {
-        const titleElem = document.createElement('h1');
+        const titleElem = document.createElement('h2');
         const subTitleElem = document.createElement('h4');
         const bodyElem = document.createElement('p');
         const footerElem = document.createElement('p');
@@ -136,10 +141,10 @@ class Card {
         subTitleElem.innerText = this.subtitle;
         bodyElem.innerText = this.body;
         footerElem.innerText = this.footer;
-        closeBtn.innerText = 'close';
+        closeBtn.innerText = 'X';
         this.card.append(titleElem, subTitleElem, bodyElem, footerElem, closeBtn);
         closeBtn.addEventListener('click', () => this.hide());
-        document.body.append(this.card)
+        gridCard.append(this.card);
     }
 
     hide() {
