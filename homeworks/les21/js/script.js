@@ -48,7 +48,7 @@ cardCreateBtn.addEventListener('click', async (event) => {
 });
 
 class API {
-    constructor(option){
+    constructor(option) {
         const {select, id} = option;
         this.select = select;
         this.id = id;
@@ -62,21 +62,49 @@ class API {
             // responses.forEach(key => console.log(key))
             // // const requests = response.map(url => fetch(url));
             // console.log(requests)
+            console.log(response)
             return response
         };
     }
 
-    data(){
-        this.selectOption(this.select, this.id).then( async (response) => {
-            const fetchSelect = await  fetch(response[this.select])
-            const responses = await fetchSelect.json()
+    data() {
+        this.selectOption(this.select, this.id).then(async (response) => {
+            const fetchSelect = await fetch(`${response[this.select]}${this.id}`);
+            const responses = await fetchSelect.json();
             // console.log(responses)
-            const arraysMap = responses.results.map(arr => arr)
-            const resultsPromise = await Promise.all(arraysMap);
+            // const arraysMap = responses.results.map(arr => arr);
+            // const resultsPromise = await Promise.all(arraysMap);
             // console.log(resultsPromise)
-            const result = resultsPromise[this.id]
-            console.log(result)
+            // const result = resultsPromise[this.id];
+            console.log(responses);
+            switch (this.select) {
+                case (this.select = 'planets'):
+                    if (responses.detail !== 'Not found') {
+                        const planet = await new Planet(responses);
+                        planet.render();
+                    } else {
+                        alert(`Card "${this.select}" with id = "${this.id}" not found`)
+                    }
+                    break;
+                case (this.select = 'vehicles'):
+                    if (responses.detail !== 'Not found') {
+                        const vehicles = await new Vehicles(responses);
+                        vehicles.render();
+                    } else {
+                        alert(`Card "${this.select}" with id = "${this.id}" not found`)
+                    }
+                    break;
+                case (this.select = 'starships'):
+                    if (responses.detail !== 'Not found') {
+                        const starships = await new Starships(responses);
+                        starships.render();
+                    } else {
+                        alert(`Card "${this.select}" with id = "${this.id}" not found`)
+                    }
+                    break
+            }
         })
+
     }
 
 }
@@ -119,30 +147,22 @@ class Card {
     }
 }
 
-const card = new Card({title: '2222', subtitle: 222223,body: 'adasdad', footer: 'sawe'});
-card.render()
-
-
-class Vehicles {
-    constructor(option){
-        // название (name)
-        // стоимость (cost_in_credits)
-        // количество человек в команде (crew)
-        // возможное количество пассажиров (passengers)
+class Vehicles extends Card {
+    constructor(option, ...rest) {
         const {name, cost_in_credits, crew, passengers} = option;
+        console.log(rest);
+        super(rest);
         this.title = name;
         this.subtitle = cost_in_credits;
         this.body = crew;
         this.footer = passengers;
     }
 }
-class Starships {
-    constructor(option) {
-        // название (name)
-        // модель (model)
-        // производитель (manufacturer)
-        // максимальная скорость (max_atmosphering_speed)
+
+class Starships extends Card {
+    constructor(option, ...rest) {
         const {name, model, manufacturer, max_atmosphering_speed} = option;
+        super(rest);
         this.title = name;
         this.subtitle = model;
         this.body = manufacturer;
@@ -150,13 +170,10 @@ class Starships {
     }
 }
 
-class Planet {
-    constructor(option) {
-        // название (name)
-        // климат (climate)
-        // поверхность (terrain)
-        // население (population)
+class Planet extends Card {
+    constructor(option, ...rest) {
         const {name, climate, terrain, population} = option;
+        super(rest);
         this.title = name;
         this.subtitle = climate;
         this.body = terrain;
