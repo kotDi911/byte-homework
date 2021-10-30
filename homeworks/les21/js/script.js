@@ -25,6 +25,7 @@
 
 const BASE_URL = 'https://swapi.dev/api';
 const optionSelect = ['starships', 'vehicles', 'planets'];
+
 const containerForm = document.createElement('form');
 const selectElem = document.createElement('select');
 const inputElem = document.createElement('input');
@@ -45,6 +46,7 @@ cardCreateBtn.addEventListener('click', async (event) => {
     let optionsFromAPI = {select, id};
     return new API(optionsFromAPI).data();
 });
+
 class API {
     constructor(option){
         const {select, id} = option;
@@ -52,36 +54,42 @@ class API {
         this.id = id;
         this.selectOption = async (select, id) => {
             // /${select}/${id}
-            const request = await fetch(`${BASE_URL}/${select}`);
+            const request = await fetch(`${BASE_URL}`);
             const response = await request.json();
-            console.log(response)
+            // console.log(response)
+            // console.log(response[select])
+            // const responses = await Promise.all(response);
+            // responses.forEach(key => console.log(key))
+            // // const requests = response.map(url => fetch(url));
+            // console.log(requests)
             return response
         };
     }
 
     data(){
-        // this.selectOption = async (select, id) => {
-        //     const request = await fetch(`${BASE_URL}/${select}/${id}`);
-        //     const response = await request.json();
-        //     console.log(response)
-        //     return response
-        // };
-        this.selectOption(this.select, this.id)
+        this.selectOption(this.select, this.id).then( async (response) => {
+            const fetchSelect = await  fetch(response[this.select])
+            const responses = await fetchSelect.json()
+            // console.log(responses)
+            const arraysMap = responses.results.map(arr => arr)
+            const resultsPromise = await Promise.all(arraysMap);
+            // console.log(resultsPromise)
+            const result = resultsPromise[this.id]
+            console.log(result)
+        })
     }
+
 }
 
 
 class Card {
     constructor(options) {
-
         const {title, subtitle, body, footer} = options;
         this.card = document.createElement('div');
         this.title = title;
         this.subtitle = subtitle;
         this.body = body;
         this.footer = footer;
-        //this.render()
-        console.log(this)
     }
 
     render() {
@@ -96,7 +104,6 @@ class Card {
         bodyElem.classList.add('card_body');
         footerElem.classList.add('card_footer');
         closeBtn.classList.add('close_btn');
-
         titleElem.innerText = this.title;
         subTitleElem.innerText = this.subtitle;
         bodyElem.innerText = this.body;
@@ -111,6 +118,10 @@ class Card {
         this.card.remove()
     }
 }
+
+const card = new Card({title: '2222', subtitle: 222223,body: 'adasdad', footer: 'sawe'});
+card.render()
+
 
 class Vehicles {
     constructor(option){
