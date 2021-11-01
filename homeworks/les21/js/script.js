@@ -1,5 +1,7 @@
 const optionSelect = ['starships', 'vehicles', 'planets'];
 
+const BASE_URL = 'https://swapi.dev/api';
+
 const containerForm = document.createElement('form');
 const gridCard = document.createElement('div');
 const selectElem = document.createElement('select');
@@ -25,63 +27,77 @@ cardCreateBtn.addEventListener('click', async (event) => {
 
     let id = inputElem.value;
     let select = selectElem.value;
-    const api = new API();
-    if(select === 'vehicles' && id){
-        api.getVehicles(id)
-            .then(async (response) => {
-                try {
-                    if(!response.ok){
-                        throw new Error(`${select} element with id="${id}" not found`)
-                    }else {
-                        alert.remove()
-                        const request = await response.json();
-                        const rend = await new Vehicles(request);
-                        rend.render()
-                    }
-                }catch (err) {
-                    containerForm.append(alert);
-                    alert.innerText = err;
-                    console.log(err)
-                }
-            });
-    }
-    if(select === 'starships' && id){
-        api.getStarships(id)
-            .then(async (response) => {
-                try {
-                    if(!response.ok){
-                        throw new Error(`${select} element with id="${id}" not found`)
-                    }else {
-                        alert.remove();
-                        const request = await response.json();
-                        const rend = await new Starships(request);
-                        rend.render()
-                    }
-                }catch (err) {
-                    containerForm.append(alert);
-                    alert.innerText = err;
-                }
-            });
-    }
-    if(select === 'planets' && id){
-        api.getPlanet(id)
-            .then(async (response) => {
-                try {
-                    if(!response.ok){
-                        throw new Error(`${select} element with id="${id}" not found`)
-                    }else {
-                        alert.remove();
-                        const request = await response.json();
-                        const rend = await new Planet(request);
-                        rend.render()
-                    }
-                }catch (err) {
-                    containerForm.append(alert);
-                    alert.innerText = err;
-                }
-            });
-    }
+    const url = `${BASE_URL}/${select}/${id}`;
+    const api = new API().sendRequest(url);
+    api.then(async (response) => {
 
+        console.log(response);
+        if (select === 'starships') {
+            if(alert){
+                alert.remove();
+            }
+            const rend = await new Starships(response);
+            rend.render()
+        }
+
+    })
+
+// if(select === 'vehicles' && id){
+//     api.sendRequest(url).then(async (response)=>await new Vehicles(response).render())
+//     api.getVehicles(id)
+//         .then(async (response) => {
+//             try {
+//                 if(!response.ok){
+//                     throw new Error(`${select} element with id="${id}" not found`)
+//                 }else {
+//                     alert.remove()
+//                     const request = await response.json();
+//                     const rend = await new Vehicles(request);
+//                     rend.render()
+//                 }
+//             }catch (err) {
+//                 containerForm.append(alert);
+//                 alert.innerText = err;
+//                 console.log(err)
+//             }
+//         });
+// }
+// if(select === 'starships' && id){
+//     api.getStarships(id)
+//         .then(async (response) => {
+//             try {
+//                 if(!response.ok){
+//                     throw new Error(`${select} element with id="${id}" not found`)
+//                 }else {
+//                     alert.remove();
+//                     const request = await response.json();
+//                     const rend = await new Starships(request);
+//                     rend.render()
+//                 }
+//             }catch (err) {
+//                 containerForm.append(alert);
+//                 alert.innerText = err;
+//             }
+//         });
+// }
+// if(select === 'planets' && id){
+//     api.getPlanet(id)
+//         .then(async (response) => {
+//             try {
+//                 if(!response.ok){
+//                     throw new Error(`${select} element with id="${id}" not found`)
+//                 }else {
+//                     alert.remove();
+//                     const request = await response.json();
+//                     const rend = await new Planet(request);
+//                     rend.render()
+//                 }
+//             }catch (err) {
+//                 containerForm.append(alert);
+//                 alert.innerText = err;
+//             }
+//         });
+//  }
 });
 
 class API {
@@ -90,12 +106,18 @@ class API {
     }
 
     async sendRequest(url) {
-        const request = await fetch(url);
-        if (!response.ok) {
-            throw new Error(`Code ${response.status}`)
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`Code ${response.status}`)
+            }
+            const result = await response.json();
+            return result
+        } catch (err) {
+            containerForm.append(alert);
+            alert.innerText = err;
+            console.log(err)
         }
-        const result = await request.json();
-        return result
     }
 
     getVehicles = async (id) => {
