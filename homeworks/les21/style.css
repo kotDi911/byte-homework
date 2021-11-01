@@ -2,10 +2,11 @@ body {
     background: #000000d1;
 }
 
-h2{
+h2 {
     color: white;
     margin: 0;
 }
+
 h3, h4, p {
     margin: 10px 0;
 }
@@ -17,8 +18,8 @@ h3, h4, p {
 }
 
 .form {
-    background: linear-gradient(to top, #000000b0, cornflowerblue);
-    padding: 20px;
+    background: linear-gradient(to top, #000000b0 20%, cornflowerblue 80%, white 100%);
+    padding: 15px 20px 25px;
     border: 2px solid black;
     border-radius: 15px;
     display: flex;
@@ -68,12 +69,15 @@ select, input {
     top: 53px;
     color: red;
 }
-.cc_Starship{
+
+.cc_Starship {
     color: #ffff00;
 }
-.cc_Vehicle{
+
+.cc_Vehicle {
     color: #00ff00;
 }
-.cc_Planet{
+
+.cc_Planet {
     color: #ff00d4;
 }

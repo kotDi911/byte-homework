@@ -25,79 +25,94 @@ document.body.append(gridCard);
 cardCreateBtn.addEventListener('click', async (event) => {
     event.preventDefault();
 
-    let id = inputElem.value;
-    let select = selectElem.value;
+    const id = inputElem.value;
+    const select = selectElem.value;
     const url = `${BASE_URL}/${select}/${id}`;
     const api = new API().sendRequest(url);
-    api.then(async (response) => {
 
-        console.log(response);
-        if (select === 'starships') {
-            if(alert){
-                alert.remove();
+    api.then(async (response) => {
+        if(!id){
+            containerForm.append(alert);
+            alert.innerText = 'ENTER ID'
+        }else {
+            alert.remove();
+            if (select === 'starships') {
+                const rend = await new Starships(response);
+                rend.render()
             }
-            const rend = await new Starships(response);
-            rend.render()
+            if (select === 'vehicles') {
+                const rend = await new Vehicles(response);
+                rend.render()
+            }
+            if (select === 'planets') {
+                const rend = await new Planets(response);
+                rend.render()
+            }
         }
 
     })
+        .catch(err => {
+            containerForm.append(alert);
+            alert.innerText = `${err}. Card "${select}" by id="${id}" not found`;
+            console.log(err)
+        })
 
-// if(select === 'vehicles' && id){
-//     api.sendRequest(url).then(async (response)=>await new Vehicles(response).render())
-//     api.getVehicles(id)
-//         .then(async (response) => {
-//             try {
-//                 if(!response.ok){
-//                     throw new Error(`${select} element with id="${id}" not found`)
-//                 }else {
-//                     alert.remove()
-//                     const request = await response.json();
-//                     const rend = await new Vehicles(request);
-//                     rend.render()
-//                 }
-//             }catch (err) {
-//                 containerForm.append(alert);
-//                 alert.innerText = err;
-//                 console.log(err)
-//             }
-//         });
-// }
-// if(select === 'starships' && id){
-//     api.getStarships(id)
-//         .then(async (response) => {
-//             try {
-//                 if(!response.ok){
-//                     throw new Error(`${select} element with id="${id}" not found`)
-//                 }else {
-//                     alert.remove();
-//                     const request = await response.json();
-//                     const rend = await new Starships(request);
-//                     rend.render()
-//                 }
-//             }catch (err) {
-//                 containerForm.append(alert);
-//                 alert.innerText = err;
-//             }
-//         });
-// }
-// if(select === 'planets' && id){
-//     api.getPlanet(id)
-//         .then(async (response) => {
-//             try {
-//                 if(!response.ok){
-//                     throw new Error(`${select} element with id="${id}" not found`)
-//                 }else {
-//                     alert.remove();
-//                     const request = await response.json();
-//                     const rend = await new Planet(request);
-//                     rend.render()
-//                 }
-//             }catch (err) {
-//                 containerForm.append(alert);
-//                 alert.innerText = err;
-//             }
-//         });
-//  }
+    // if(select === 'vehicles' && id){
+    //     api.sendRequest(url).then(async (response)=>await new Vehicles(response).render())
+    //     api.getVehicles(id)
+    //         .then(async (response) => {
+    //             try {
+    //                 if(!response.ok){
+    //                     throw new Error(`${select} element with id="${id}" not found`)
+    //                 }else {
+    //                     alert.remove()
+    //                     const request = await response.json();
+    //                     const rend = await new Vehicles(request);
+    //                     rend.render()
+    //                 }
+    //             }catch (err) {
+    //                 containerForm.append(alert);
+    //                 alert.innerText = err;
+    //                 console.log(err)
+    //             }
+    //         });
+    // }
+    // if(select === 'starships' && id){
+    //     api.getStarships(id)
+    //         .then(async (response) => {
+    //             try {
+    //                 if(!response.ok){
+    //                     throw new Error(`${select} element with id="${id}" not found`)
+    //                 }else {
+    //                     alert.remove();
+    //                     const request = await response.json();
+    //                     const rend = await new Starships(request);
+    //                     rend.render()
+    //                 }
+    //             }catch (err) {
+    //                 containerForm.append(alert);
+    //                 alert.innerText = err;
+    //             }
+    //         });
+    // }
+    // if(select === 'planets' && id){
+    //     api.getPlanet(id)
+    //         .then(async (response) => {
+    //             try {
+    //                 if(!response.ok){
+    //                     throw new Error(`${select} element with id="${id}" not found`)
+    //                 }else {
+    //                     alert.remove();
+    //                     const request = await response.json();
+    //                     const rend = await new Planet(request);
+    //                     rend.render()
+    //                 }
+    //             }catch (err) {
+    //                 containerForm.append(alert);
+    //                 alert.innerText = err;
+    //             }
+    //         });
+    //  }
 });
 
 class API {
@@ -106,33 +121,27 @@ class API {
     }
 
     async sendRequest(url) {
-        try {
-            const response = await fetch(url);
-            if (!response.ok) {
-                throw new Error(`Code ${response.status}`)
-            }
-            const result = await response.json();
-            return result
-        } catch (err) {
-            containerForm.append(alert);
-            alert.innerText = err;
-            console.log(err)
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`Code ${response.status}`)
         }
+        const result = await response.json();
+        return result
     }
 
-    getVehicles = async (id) => {
-        const vehicles = await fetch(`${this.baseUrl}/vehicles/${id}`);
-        console.log(vehicles)
-        return vehicles
-    };
-    getStarships = async (id) => {
-        const starships = await fetch(`${this.baseUrl}/starships/${id}`);
-        return starships
-    };
-    getPlanet = async (id) => {
-        const planet = await fetch(`${this.baseUrl}/planets/${id}`);
-        return planet
-    }
+    // getVehicles = async (id) => {
+    //     const vehicles = await fetch(`${this.baseUrl}/vehicles/${id}`);
+    //     console.log(vehicles)
+    //     return vehicles
+    // };
+    // getStarships = async (id) => {
+    //     const starships = await fetch(`${this.baseUrl}/starships/${id}`);
+    //     return starships
+    // };
+    // getPlanet = async (id) => {
+    //     const planet = await fetch(`${this.baseUrl}/planets/${id}`);
+    //     return planet
+    // }
 }
 
 
@@ -180,7 +189,6 @@ class Card {
 class Vehicles extends Card {
     constructor(option, ...rest) {
         const {name, cost_in_credits, crew, passengers} = option;
-        console.log(rest);
         super(rest);
         this.title = name;
         this.subtitle = cost_in_credits;
@@ -202,7 +210,7 @@ class Starships extends Card {
     }
 }
 
-class Planet extends Card {
+class Planets extends Card {
     constructor(option, ...rest) {
         const {name, climate, terrain, population} = option;
         super(rest);
