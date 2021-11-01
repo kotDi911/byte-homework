@@ -2,29 +2,36 @@ body {
     background: #000000d1;
 }
 
-h2, h4, p {
+h2{
+    color: white;
+    margin: 0;
+}
+h3, h4, p {
     margin: 10px 0;
 }
+
 .grid {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     gap: 5px;
 }
 
-.form{
-    background: linear-gradient(to top, cornflowerblue, #000000b0);
+.form {
+    background: linear-gradient(to top, #000000b0, cornflowerblue);
     padding: 20px;
     border: 2px solid black;
     border-radius: 15px;
     display: flex;
 }
-select, input{
+
+select, input {
     height: 35px;
     font-size: 20px;
     box-sizing: border-box;
 }
+
 .card {
-    background: linear-gradient(to top, cornflowerblue, #000000b0);
+    background: linear-gradient(to top, cornflowerblue 55%, #000000b0 80%);
     padding: 10px;
     margin: 10px;
     border: 2px solid black;
@@ -33,10 +40,12 @@ select, input{
     display: flex;
     flex-direction: column;
 }
-.create_btn{
+
+.create_btn {
     background: #00bf17;
     font-size: 20px;
 }
+
 .close_btn {
     border: 2px solid #91ff00;
     border-radius: 50%;
@@ -50,4 +59,21 @@ select, input{
     position: absolute;
     top: 5px;
     right: 5px;
+}
+
+.alert-message {
+    font-size: 20px;
+    position: absolute;
+    left: 30px;
+    top: 53px;
+    color: red;
+}
+.cc_Starship{
+    color: #ffff00;
+}
+.cc_Vehicle{
+    color: #00ff00;
+}
+.cc_Planet{
+    color: #ff00d4;
 }
