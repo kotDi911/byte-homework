@@ -22,97 +22,61 @@ containerForm.append(selectElem, inputElem, cardCreateBtn);
 document.body.append(containerForm);
 document.body.append(gridCard);
 
-cardCreateBtn.addEventListener('click', async (event) => {
-    event.preventDefault();
+const renderShip = async (select, arg) => {
+    if (select === 'starships') {
+        const rend = await new Starships(arg);
+        rend.render();
+    }
+};
 
-    const id = inputElem.value;
-    const select = selectElem.value;
-    const url = `${BASE_URL}/${select}/${id}`;
+const renderVehicles = async (select, arg) => {
+    if (select === 'vehicles') {
+        const rend = await new Vehicles(arg);
+        rend.render()
+    }
+};
+
+const renderPlanets = async (select, arg) => {
+    if (select === 'planets') {
+        const rend = await new Planets(arg);
+        rend.render()
+    }
+};
+
+const handleFormSubmit = (select, id, url) =>{
     const api = new API().sendRequest(url);
 
     api.then(async (response) => {
-        if(!id){
+        if (!id) {
             containerForm.append(alert);
             alert.innerText = 'ENTER ID'
-        }else {
+        } else {
             alert.remove();
-            if (select === 'starships') {
-                const rend = await new Starships(response);
-                rend.render()
-            }
-            if (select === 'vehicles') {
-                const rend = await new Vehicles(response);
-                rend.render()
-            }
-            if (select === 'planets') {
-                const rend = await new Planets(response);
-                rend.render()
-            }
+            renderShip(select, response);
+            renderVehicles(select, response);
+            renderPlanets(select, response);
+            let add = {card: select, ...response};
+            storageCard[storageCard.length] = add
         }
-
+        localStorage.setItem('aaa', JSON.stringify(storageCard))
     })
         .catch(err => {
             containerForm.append(alert);
             alert.innerText = `${err}. Card "${select}" by id="${id}" not found`;
             console.log(err)
         })
+};
 
-    // if(select === 'vehicles' && id){
-    //     api.sendRequest(url).then(async (response)=>await new Vehicles(response).render())
-    //     api.getVehicles(id)
-    //         .then(async (response) => {
-    //             try {
-    //                 if(!response.ok){
-    //                     throw new Error(`${select} element with id="${id}" not found`)
-    //                 }else {
-    //                     alert.remove()
-    //                     const request = await response.json();
-    //                     const rend = await new Vehicles(request);
-    //                     rend.render()
-    //                 }
-    //             }catch (err) {
-    //                 containerForm.append(alert);
-    //                 alert.innerText = err;
-    //                 console.log(err)
-    //             }
-    //         });
-    // }
-    // if(select === 'starships' && id){
-    //     api.getStarships(id)
-    //         .then(async (response) => {
-    //             try {
-    //                 if(!response.ok){
-    //                     throw new Error(`${select} element with id="${id}" not found`)
-    //                 }else {
-    //                     alert.remove();
-    //                     const request = await response.json();
-    //                     const rend = await new Starships(request);
-    //                     rend.render()
-    //                 }
-    //             }catch (err) {
-    //                 containerForm.append(alert);
-    //                 alert.innerText = err;
-    //             }
-    //         });
-    // }
-    // if(select === 'planets' && id){
-    //     api.getPlanet(id)
-    //         .then(async (response) => {
-    //             try {
-    //                 if(!response.ok){
-    //                     throw new Error(`${select} element with id="${id}" not found`)
-    //                 }else {
-    //                     alert.remove();
-    //                     const request = await response.json();
-    //                     const rend = await new Planet(request);
-    //                     rend.render()
-    //                 }
-    //             }catch (err) {
-    //                 containerForm.append(alert);
-    //                 alert.innerText = err;
-    //             }
-    //         });
-    //  }
+let storageCard = [];
+
+cardCreateBtn.addEventListener('click', async (event) => {
+    event.preventDefault();
+
+    const id = inputElem.value;
+    const select = selectElem.value;
+    const url = `${BASE_URL}/${select}/${id}`;
+    handleFormSubmit(select, id, url)
+
 });
 
 class API {
@@ -128,20 +92,6 @@ class API {
         const result = await response.json();
         return result
     }
-
-    // getVehicles = async (id) => {
-    //     const vehicles = await fetch(`${this.baseUrl}/vehicles/${id}`);
-    //     console.log(vehicles)
-    //     return vehicles
-    // };
-    // getStarships = async (id) => {
-    //     const starships = await fetch(`${this.baseUrl}/starships/${id}`);
-    //     return starships
-    // };
-    // getPlanet = async (id) => {
-    //     const planet = await fetch(`${this.baseUrl}/planets/${id}`);
-    //     return planet
-    // }
 }
 
 
@@ -194,7 +144,7 @@ class Vehicles extends Card {
         this.subtitle = cost_in_credits;
         this.body = crew;
         this.footer = passengers;
-        this.cardclas = 'Vehicle'
+        this.cardclas = 'Vehicle';
     }
 }
 
@@ -206,7 +156,7 @@ class Starships extends Card {
         this.subtitle = model;
         this.body = manufacturer;
         this.footer = max_atmosphering_speed;
-        this.cardclas = 'Starship'
+        this.cardclas = 'Starship';
     }
 }
 
@@ -218,6 +168,22 @@ class Planets extends Card {
         this.subtitle = climate;
         this.body = terrain;
         this.footer = population;
-        this.cardclas = 'Planet'
+        this.cardclas = 'Planet';
     }
 }
+
+const renderStorage = () => {
+    let card = localStorage.getItem('aaa');
+
+    if (card) {
+        let cards = JSON.parse(card);
+        console.log(cards)
+        cards.forEach((elem) => {
+            renderShip(elem.card, elem);
+            renderVehicles(elem.card, elem);
+            renderPlanets(elem.card, elem)
+        });
+        return storageCard = [...cards]
+    }
+};
+renderStorage();
