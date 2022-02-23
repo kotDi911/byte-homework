@@ -7,7 +7,7 @@ const gridCard = document.createElement('div');
 const selectElem = document.createElement('select');
 const inputElem = document.createElement('input');
 const cardCreateBtn = document.createElement('button');
-const alert = document.createElement('p')
+const alert = document.createElement('p');
 const optionElem = optionSelect.map((option) => `<option value="${option}"> ${option} </option>`).join('');
 
 cardCreateBtn.innerText = 'Add Card';
@@ -17,6 +17,7 @@ selectElem.innerHTML = optionElem;
 gridCard.classList.add('grid');
 containerForm.classList.add('form');
 alert.classList.add('alert-message');
+cardCreateBtn.setAttribute('type', 'submit');
 
 containerForm.append(selectElem, inputElem, cardCreateBtn);
 document.body.append(containerForm);
@@ -43,7 +44,7 @@ const renderPlanets = async (select, arg) => {
     }
 };
 
-const handleFormSubmit = (select, id, url) =>{
+const handleFormSubmit = (select, id, url) => {
     const api = new API().sendRequest(url);
 
     api.then(async (response) => {
@@ -55,7 +56,7 @@ const handleFormSubmit = (select, id, url) =>{
             renderShip(select, response);
             renderVehicles(select, response);
             renderPlanets(select, response);
-            let add = {card: select, ...response};
+            let add = {card: select, code: `${select}_${id}`, ...response};
             storageCard[storageCard.length] = add
         }
         localStorage.setItem('aaa', JSON.stringify(storageCard))
@@ -75,8 +76,7 @@ cardCreateBtn.addEventListener('click', async (event) => {
     const id = inputElem.value;
     const select = selectElem.value;
     const url = `${BASE_URL}/${select}/${id}`;
-    handleFormSubmit(select, id, url)
-
+    handleFormSubmit(select, id, url);
 });
 
 class API {
@@ -97,13 +97,15 @@ class API {
 
 class Card {
     constructor(options) {
-        const {title, subtitle, body, footer} = options;
+        const {title, subtitle, body, footer, id} = options;
         this.card = document.createElement('div');
         this.title = title;
         this.subtitle = subtitle;
         this.body = body;
         this.footer = footer;
-        this.cardclas = ''
+        this.id = id;
+        this.code = `${this.cardclas}_${this.id}`;
+        this.cardclas = '';
     }
 
     render() {
@@ -119,7 +121,7 @@ class Card {
         bodyElem.classList.add('card_body');
         footerElem.classList.add('card_footer');
         closeBtn.classList.add('close_btn');
-        cardClass.classList.add(`cc_${this.cardclas}`)
+        cardClass.classList.add(`cc_${this.cardclas}`);
         titleElem.innerText = this.title;
         subTitleElem.innerText = this.subtitle;
         bodyElem.innerText = this.body;
@@ -132,7 +134,8 @@ class Card {
     }
 
     hide() {
-        this.card.remove()
+        this.card.remove();
+        localStorage.setItem('aaa', JSON.stringify(storageCard))
     }
 }
 
@@ -169,6 +172,7 @@ class Planets extends Card {
         this.body = terrain;
         this.footer = population;
         this.cardclas = 'Planet';
+        // this.id = this.cardclas + '_' + id;
     }
 }
 
